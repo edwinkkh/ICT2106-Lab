@@ -9,23 +9,29 @@ namespace ExploreCalifornia.Controllers
 {
     public class TourController : Controller
     {
+        static Tour tour1 = new Tour
+        {
+            Name = "Cali Walking Tour"
+        };
+
+        static Tour tour2 = new Tour
+        {
+            Name = "Cali Cycling Tour"
+        };
+
+        static List<Tour> model = new List<Tour>{tour1, tour2 };
+
         // GET: Tour
         public ActionResult Index()
-        {
-            Tour tour1 = new Tour();
-            tour1.Name = "Cali Walking Tour";
-
-            Tour tour2 = new Tour();
-            tour2.Name = "Cali Cycling Tour";
-
-            var model = new List<Tour> { tour1, tour2 };
+        {     
             return View(model);
         }
 
         // GET: Tour/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var tour = model.Where(t => t.Id == id).FirstOrDefault();
+            return View("View", tour);
         }
 
         // GET: Tour/Create
@@ -41,9 +47,21 @@ namespace ExploreCalifornia.Controllers
         {
             try
             {
+                int id =  Convert.ToInt32(collection["id"]);
+                Tour tour = new Tour
+                {
+                    Id = id,
+                    Name = collection["Name"],
+                    Description = collection["Description"],
+                    Length = Convert.ToInt32(collection["Length"]),
+                    Price = Convert.ToDecimal(collection["Price"]),
+                    Rating = collection["Rating"],
+                    IncludesMeals = Convert.ToBoolean(collection["IncludesMeals"])
+                };
+                model.Add(tour);
                 // TODO: Add insert logic here
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new {Id = id});
             }
             catch
             {
@@ -54,7 +72,8 @@ namespace ExploreCalifornia.Controllers
         // GET: Tour/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var tour = model.Where(t => t.Id == id).FirstOrDefault();
+            return View(tour);
         }
 
         // POST: Tour/Edit/5
