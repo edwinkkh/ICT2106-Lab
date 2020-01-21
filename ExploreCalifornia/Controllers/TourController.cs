@@ -11,11 +11,13 @@ namespace ExploreCalifornia.Controllers
     {
         static Tour tour1 = new Tour
         {
+            Id = 1,
             Name = "Cali Walking Tour"
         };
 
         static Tour tour2 = new Tour
         {
+            Id = 2,
             Name = "Cali Cycling Tour"
         };
 
@@ -47,7 +49,8 @@ namespace ExploreCalifornia.Controllers
         {
             try
             {
-                int id =  Convert.ToInt32(collection["id"]);
+                Random random = new Random();
+                int id = random.Next();
                 Tour tour = new Tour
                 {
                     Id = id,
@@ -84,7 +87,13 @@ namespace ExploreCalifornia.Controllers
             try
             {
                 // TODO: Add update logic here
-
+                var tour = model.Where(t => t.Id == id).FirstOrDefault();
+                tour.Name = collection["Name"];
+                tour.Description = collection["Description"];
+                tour.Length = Convert.ToInt32(collection["Length"]);
+                tour.Price = Convert.ToDecimal(collection["Price"]);
+                tour.Rating = collection["Rating"];
+                tour.IncludesMeals = Convert.ToBoolean(collection["IncludesMeals"]);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -96,7 +105,19 @@ namespace ExploreCalifornia.Controllers
         // GET: Tour/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            try
+            {
+                var tour = model.Where(t => t.Id == id).FirstOrDefault();
+                if (tour != null)
+                {
+                    model.Remove(tour);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // POST: Tour/Delete/5
@@ -106,8 +127,11 @@ namespace ExploreCalifornia.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-
+                var tour = model.Where(t => t.Id == id).FirstOrDefault();
+                if (tour != null)
+                {
+                    model.Remove(tour);
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
