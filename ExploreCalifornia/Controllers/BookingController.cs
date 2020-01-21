@@ -72,6 +72,32 @@ namespace ExploreCalifornia.Controllers
             {
                 return View();
             }
-        }   
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, IFormCollection collection)
+        {
+            try
+            {
+                // TODO: Add update logic here
+                var booking = bookingList.Where(t => t.Id == id).FirstOrDefault();
+                booking.TourID = Convert.ToInt32(collection["TourID"]);
+                booking.TourName = collection["TourName"];
+                booking.ClientID = Convert.ToInt32(collection["ClientID"]);
+                booking.DepartureDate = Convert.ToDateTime(collection["DepartureDate"]);
+                booking.NumberOfPeople = Convert.ToInt32(collection["NumberOfPeople"]);
+                booking.FullName = collection["FullName"];
+                booking.Email = collection["Email"];
+                booking.ContactNo = Convert.ToInt32(collection["contactNo"]);
+                booking.SpecialRequest = collection["SpecialRequest"];
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+
     }
 }
