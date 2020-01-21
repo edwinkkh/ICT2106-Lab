@@ -29,7 +29,14 @@ namespace ExploreCalifornia.Controllers
         public ActionResult Details(int id)
         {
             var booking = bookingList.Where(t => t.Id == id).FirstOrDefault();
-            return View("View", booking);
+            return View(booking);
+        }
+
+        // GET: Tour/Edit/5
+        public ActionResult Edit(int id)
+        {
+            var booking = bookingList.Where(t => t.Id == id).FirstOrDefault();
+            return View(booking);
         }
 
         [HttpPost]
@@ -44,7 +51,7 @@ namespace ExploreCalifornia.Controllers
                 {
                     Id = id,
                     TourID = Convert.ToInt32(collection["TourID"]),
-                    TourName = collection["TourNames"],
+                    TourName = collection["TourName"],
                     ClientID = Convert.ToInt32(collection["ClientID"]),
                     DepartureDate = Convert.ToDateTime(collection["DepartureDate"]),
                     NumberOfPeople = Convert.ToInt32(collection["NumberOfPeople"]),
