@@ -99,5 +99,15 @@ namespace ExploreCalifornia.Controllers
         }
 
 
+        // GET: Tour/Delete/5
+        public ActionResult Delete(int id)
+        {
+            var booking = bookingList.Where(t => t.Id == id).FirstOrDefault();
+            if (booking != null)
+            {
+                bookingList.Remove(booking);
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
