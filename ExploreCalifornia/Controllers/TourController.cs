@@ -51,6 +51,10 @@ namespace ExploreCalifornia.Controllers
             {
                 Random random = new Random();
                 int id = random.Next();
+                bool includeMeal = false;
+                if (collection["IncludesMeals"] == "1"){
+                    includeMeal = true;
+                }
                 Tour tour = new Tour
                 {
                     Id = id,
@@ -59,7 +63,7 @@ namespace ExploreCalifornia.Controllers
                     Length = Convert.ToInt32(collection["Length"]),
                     Price = Convert.ToDecimal(collection["Price"]),
                     Rating = collection["Rating"],
-                    IncludesMeals = Convert.ToBoolean(collection["IncludesMeals"])
+                    IncludesMeals = includeMeal
                 };
                 model.Add(tour);
                 // TODO: Add insert logic here
@@ -93,7 +97,12 @@ namespace ExploreCalifornia.Controllers
                 tour.Length = Convert.ToInt32(collection["Length"]);
                 tour.Price = Convert.ToDecimal(collection["Price"]);
                 tour.Rating = collection["Rating"];
-                tour.IncludesMeals = Convert.ToBoolean(collection["IncludesMeals"]);
+                bool includeMeal = false;
+                if (collection["IncludesMeals"] == 1)
+                {
+                    includeMeal = true;
+                }
+                tour.IncludesMeals = includeMeal;
                 return RedirectToAction(nameof(Index));
             }
             catch
