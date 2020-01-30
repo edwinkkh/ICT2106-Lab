@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExploreCalifornia.Data
 {
-    public class TourGateway: ITourGateway
+    public class TourGateway: DateGateway<Tour>
     {
         private readonly ExploreCaliforniaContext db;
 
