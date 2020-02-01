@@ -4,10 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h2>Index</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
+
+    <div style="text-align:right">
+        <label>Price Range</label>
+        @Html.DropDownList("PriceRange", null, new { onchange = "document.location.href = '/Tours/Index?value=' + this.value;" })
+    </div>
 </p>
 <table class="table">
     <thead>
@@ -22,7 +27,9 @@
                 @Html.DisplayNameFor(model => model.Length)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.ActionLink("Price", "Index", "Tours", new {
+                    value = 4
+                })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rating)
@@ -55,6 +62,8 @@
                 @Html.DisplayFor(modelItem => item.IncludesMeals)
             </td>
             <td>
+                @Html.ActionLink("Book", "Create",
+                "Bookings", new { tourId = item.Id, tourName = item.Name }, null) |
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>

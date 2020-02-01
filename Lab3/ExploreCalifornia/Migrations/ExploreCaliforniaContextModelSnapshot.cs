@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 
 namespace ExploreCalifornia.Migrations
 {
@@ -14,7 +15,7 @@ namespace ExploreCalifornia.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -41,6 +42,32 @@ namespace ExploreCalifornia.Migrations
 
                     b.ToTable("Tour");
                 });
+
+            modelBuilder.Entity("ExploreCalifornia.Models.Booking", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                b.Property<int>("TourID");
+
+                b.Property<bool>("TourName");
+
+                b.Property<int>("ClientID");
+
+                b.Property<DateTime>("DepartureDate");
+
+                b.Property<int>("NumberOfPeople");
+
+                b.Property<string>("FullName");
+                b.Property<string>("Email");
+                b.Property<string>("ContactNo");
+                b.Property<string>("SpecialRequest");
+
+                b.HasKey("Id");
+
+                b.ToTable("Booking");
+            });
 #pragma warning restore 612, 618
         }
     }
