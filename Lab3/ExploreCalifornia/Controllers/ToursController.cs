@@ -10,156 +10,71 @@ using ExploreCalifornia.Data;
 
 namespace ExploreCalifornia.Controllers
 {
-    public class ToursController : Controller
+    public class ToursController : GeneralController<Tour>
     {
-        private readonly TourGateway tourGateway;
+        private TourGateway tourGateway;
+        List<SelectListItem> items = new List<SelectListItem>();
 
-        public ToursController(ExploreCaliforniaContext context)
+        public ToursController(ExploreCaliforniaContext context) : base(context)
         {
+            //_context = context;
             tourGateway = new TourGateway(context);
         }
 
         // GET: Tours
-        public async Task<IActionResult> Index()
+        public override IActionResult Index(int? value)
         {
-            return View(await tourGateway.SelectAll());
-        }
+            //return View(await _context.Tour.ToListAsync());
+            //List<SelectListItem> items = new List<SelectListItem>();
+            SelectListItem item = new SelectListItem() { Text = "", Value = "4", Selected = true };
+            SelectListItem item1 = new SelectListItem() { Text = "All", Value = "0", Selected = false };
+            SelectListItem item2 = new SelectListItem() { Text = "$0-$1000", Value = "1", Selected = false };
+            SelectListItem item3 = new SelectListItem() { Text = "$1000-$5000", Value = "2", Selected = false };
+            SelectListItem item4 = new SelectListItem() { Text = "Above $5000", Value = "3", Selected = false };
+            items.Add(item);
+            items.Add(item1);
+            items.Add(item2);
+            items.Add(item3);
+            items.Add(item4);
+            ViewBag.PriceRange = items;
 
-        // GET: Tours/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+            if (value != null)
             {
-                return NotFound();
+                switch (value)
+                {
+                    case 0:
+                        return View(tourGateway.SelectAll());
+                    case 1:
+                        return View(from row in tourGateway.db.Tour where (row.Price <= 1000) select row);
+                    case 2:
+                        return View(from row in tourGateway.db.Tour where ((row.Price >= 1000) && (row.Price <= 5000)) select row);
+                    case 3:
+                        return View(from row in tourGateway.db.Tour where (row.Price >= 5000) select row);
+                    case 4:
+                        return View("Index", tourGateway.SortAllByPrice());
+                    default:
+                        break;
+                }
             }
 
-            var tour = await tourGateway.SelectById(id);
-            if (tour == null)
-            {
-                return NotFound();
-            }
 
-            return View(tour);
-        }
-
-        // GET: Tours/Create
-        public IActionResult Create()
-        {
-            return View();
+            return View(tourGateway.SelectAll());
         }
 
         // POST: Tours/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Length,Price,Rating,IncludesMeals")] Tour tour)
+        public override IActionResult Create([Bind("Id,Name,Description,Length,Price,Rating,IncludesMeals")] Tour tour)
         {
             if (ModelState.IsValid)
             {
-                tour = tourGateway.Insert(tour);
+                tourGateway.Insert(tour);
                 var newlyCreatedId = tour.Id;
-                return RedirectToAction(nameof(Confirm), new { id = newlyCreatedId});
+                return RedirectToAction(nameof(Confirm), new { id = newlyCreatedId });
             }
-            return View(tour);
-        }
-
-        // GET: Tours/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tour = await tourGateway.SelectById(id);
-            if (tour == null)
-            {
-                return NotFound();
-            }
-            return View(tour);
-        }
-
-        // POST: Tours/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Length,Price,Rating,IncludesMeals")] Tour tour)
-        {
-            if (id != tour.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    tourGateway.Update(tour);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TourExists(tour.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(tour);
-        }
-
-        // GET: Tours/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tour = await tourGateway.SelectById(id);
-            if (tour == null)
-            {
-                return NotFound();
-            }
-
-            return View(tour);
-        }
-
-        // POST: Tours/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var tour = await tourGateway.SelectById(id);
-            tour = tourGateway.Delete(id);
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool TourExists(int id)
-        {
-            return tourGateway.Exist(id);
-        }
-
-        public async Task<IActionResult> Confirm(int? id)
-        {
-            if(id == null)
-            {
-                return NotFound();
-            }
-
-            var tour = await tourGateway.SelectById(id);
-
-            if (tour == null)
-            {
-                return NotFound();
-            }
-
             return View(tour);
         }
     }

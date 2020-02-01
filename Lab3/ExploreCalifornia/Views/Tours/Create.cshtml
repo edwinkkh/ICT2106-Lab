@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h2>Create</h2>
 
 <h4>Tour</h4>
 <hr />
@@ -37,13 +37,15 @@
                 <input asp-for="Rating" class="form-control" />
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludesMeals" /> @Html.DisplayNameFor(model => model.IncludesMeals)
-                </label>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IncludesMeals" /> @Html.DisplayNameFor(model => model.IncludesMeals)
+                    </label>
+                </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
     </div>

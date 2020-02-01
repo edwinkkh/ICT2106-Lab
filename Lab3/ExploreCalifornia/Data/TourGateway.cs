@@ -1,58 +1,23 @@
-﻿using ExploreCalifornia.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExploreCalifornia.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExploreCalifornia.Data
 {
-    public class TourGateway: ITourGateway
+    public class TourGateway : DataGateway<Tour>
     {
-        private readonly ExploreCaliforniaContext db;
-
-        public TourGateway(ExploreCaliforniaContext context)
+        public TourGateway(ExploreCaliforniaContext context) : base(context)
         {
-            db = context;
+            this.db = context;
         }
 
-        public async Task<IEnumerable<Tour>> SelectAll()
+        public IEnumerable<Tour> SortAllByPrice()
         {
-            return await db.Tour.ToListAsync();
+            return data.OrderBy(t => t.Price).ToList();
         }
 
-        public async Task<Tour> SelectById(int? id)
-        {
-           var tour = await db.Tour.FirstOrDefaultAsync(m => m.Id == id);
-        
-            return tour;
-        }
-
-        public Tour Insert(Tour tour)
-        {
-            db.Add(tour);
-            db.SaveChanges();
-            return tour;
-        }
-
-        public Tour Update(Tour tour)
-        {
-            db.Update(tour);
-            db.SaveChanges();
-
-            return tour;
-        }
-
-        public Tour Delete(int? id) {
-            Tour tour = db.Tour.Find(id);
-            db.Tour.Remove(tour);
-            db.SaveChanges();
-            return tour;
-        }
-
-        public bool Exist(int? id)
-        {
-            return db.Tour.Any(e => e.Id == id);
-        }
     }
 }

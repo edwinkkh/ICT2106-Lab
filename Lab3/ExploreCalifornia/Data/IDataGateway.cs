@@ -6,13 +6,13 @@ using ExploreCalifornia.Models;
 
 namespace ExploreCalifornia.Data
 {
-    interface ITourGateway
+    interface IDataGateway<T> where T:class
     {
-        IEnumerable<Tour> SelectAll();
-        Tour SelectById(int? id);
-        void Insert(Tour tour);
-        void Update(Tour tour);
-        Tour Delete(int? id);
+        IEnumerable<T> SelectAll();
+        T SelectById(int? id);
+        void Insert(T obj);
+        void Update(T obj);
+        T Delete(int? id);
         void Save();
     }
 }
