@@ -11,7 +11,7 @@ namespace ExploreCalifornia.Models
         public int Id { get; set; }
         public int TourID { get; set; }
         public string TourName { get; set; }
-        public int ClientID { get; set; }
+        public string ClientID { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DepartureDate { get; set; }

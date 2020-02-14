@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ExploreCalifornia.Models;
 using ExploreCalifornia.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExploreCalifornia.Controllers
 {
@@ -15,14 +16,6 @@ namespace ExploreCalifornia.Controllers
             bookingGateway = new BookingGateway(context);
         }
 
-        // GET: Bookings/Create
-        public IActionResult Create(int tourId, string tourName)
-        {
-            Booking newB = new Booking();
-            newB.TourID = tourId;
-            newB.TourName = tourName;
-            return View(newB);
-        }
 
         // POST: Bookings/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

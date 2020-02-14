@@ -34,7 +34,7 @@ namespace ExploreCalifornia.Migrations
                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                    TourID = table.Column<int>(nullable: false),
                    TourName = table.Column<string>(nullable: true),
-                   ClientID = table.Column<int>(nullable: true),
+                   ClientID = table.Column<string>(nullable: true),
                    DepartureDate = table.Column<DateTime>(nullable: false),
                    NumberOfPeople = table.Column<int>(nullable: true),
                    FullName = table.Column<string>(nullable: true),

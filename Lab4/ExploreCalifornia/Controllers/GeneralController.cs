@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ExploreCalifornia.Data;
 using ExploreCalifornia.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,9 +20,11 @@ namespace ExploreCalifornia.Controllers
             db = context;
             dataGateway = new DataGateway<T>(context);
         }
-
-        public IActionResult Create()
+        [Authorize]
+        public virtual IActionResult Create(int tourId, string tourName)
         {
+            ViewBag.TourID = tourId;
+            ViewBag.ClientID = User.Identity.Name;
             return View();
         }
         [HttpPost]
